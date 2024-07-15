@@ -4,6 +4,8 @@ from torch import nn
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 
+
+
 # helpers
 
 def pair(t):
@@ -109,6 +111,7 @@ class ViT(nn.Module):
         self.to_latent = nn.Identity()
 
         self.mlp_head = nn.Linear(dim, num_classes)
+
 
     def forward(self, img):
         x = self.to_patch_embedding(img)

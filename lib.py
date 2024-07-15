@@ -14,6 +14,8 @@ import IPython.display as Ipd
 import numpy as np
 from pydub import AudioSegment
 import librosa
+import matplotlib.pyplot as plt
+import IPython.display as ipd
 
 
 def determine_is_stridor_and_phonatory(name, folder_path, patient_status_df):
@@ -205,3 +207,35 @@ def filter_recordings_by_label(data, label_prefix):
             filtered_data.append(recording)
 
     return filtered_data
+
+
+def display_and_play_sample(audio_data, index):
+    if index < 0 or index >= len(audio_data):
+        print("Index out of range")
+        return
+
+    sample = audio_data[index]
+    audio_signal = sample["audio_sample"].signal.squeeze().numpy()  # Extract signal from Audio object and convert to numpy array
+    sample_rate = sample["audio_sample"].sample_rate  # Get the sample rate from the Audio object
+    
+    # Display details
+    print(f"UID: {sample['uid']}")
+    print(f"Recording ID: {sample['recording_id']}")
+    print(f"Recording Label: {sample['recording_label']}")
+    
+    # Plot waveform
+    plt.figure(figsize=(12, 4))
+    plt.plot(audio_signal)
+    plt.title("Waveform")
+    plt.xlabel("Sample")
+    plt.ylabel("Amplitude")
+    plt.show()
+    
+    # Play audio
+    ipd.display(ipd.Audio(audio_signal, rate=sample_rate))
+
+
+
+
+
+
